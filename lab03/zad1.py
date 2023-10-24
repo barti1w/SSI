@@ -7,12 +7,11 @@ import matplotlib.pyplot as plt
 
 values = np.loadtxt("spirala.txt", skiprows=0, dtype='double')
 
-m = 3
-iters = 10
+m = 5
+iters = 100
 random_indexed = random.sample(range(values.shape[0]), m)
 V = values[random_indexed]
-colors = [[np.round(np.random.rand(), 1) for _ in range(m)] for _ in range(3)]
-
+colors = [[np.round(np.random.rand(), 1) for _ in range(3)] for _ in range(m)]
 
 groups = {key: np.array([]).reshape(0, 2) for key in range(m)}
 
@@ -21,7 +20,6 @@ for _ in range(iters):
         min_distance = sys.maxsize
         for middle_point_index in range(len(V)):
             distance = math.dist(values[s], V[middle_point_index])
-            u = 0
             if distance < min_distance:
                 min_distance = distance
                 u = middle_point_index
@@ -34,6 +32,6 @@ for _ in range(iters):
 
     for j in range(m):
         if len(groups[j]) > 0:
-            V[j][0] = np.mean(groups[j][0])
-            V[j][1] = np.mean(groups[j][1])
+            V[j][0] = np.mean(groups[j][:, 0])
+            V[j][1] = np.mean(groups[j][:, 1])
     groups = {key: np.array([]).reshape(0, 2) for key in range(m)}
