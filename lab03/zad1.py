@@ -27,6 +27,10 @@ for _ in range(iters):
     for i in range(m):
         plt.scatter(groups[i][:, 0], groups[i][:, 1], color=colors[i])
         plt.scatter(V[i][0], V[i][1], color=colors[i], marker='d', edgecolors='black')
+
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.title("K - means")
     plt.show()
 
     for j in range(m):

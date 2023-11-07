@@ -8,7 +8,7 @@ m = 3  # Number of clusters
 M = len(values)  # Number of samples
 n = 2  # Number of attributes
 iters = 10  # Number of iterations
-fcm_m = 2  # Fuzziness parameter
+fcm_m = 2  # fuzziness
 
 D = np.random.rand(m, M)
 U = np.random.rand(m, M)
@@ -49,5 +49,7 @@ for i in range(iters):
     for i in range(len(values)):
         plt.scatter(values[i, 0], values[i, 1], c=(U[0][i], U[1][i], U[2][i]), alpha=0.5)
     plt.legend()
+    plt.xlabel("X")
+    plt.ylabel("Y")
     plt.title('FCM Clustering')
     plt.show()
