@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 
 znak_wzorcowy_1 = np.array([
     [0, 0, 0, 1],
@@ -55,42 +56,60 @@ test = [[znak_testowy_1, 'znak_testowy_1'], [znak_testowy_2, 'znak_testowy_2'], 
 
 def miara_podobienstwa(BA, BB):
     miara = 0
-    indexBA = -1
+    indexBA = 0
     for pointBA in np.nditer(BA):
-        indexBB = -1
+        indexBB = 0
         indexBA += 1
         if pointBA:
             odl_min = sys.maxsize
             for pointBB in np.nditer(BB):
+                indexBB += 1
                 if pointBB:
-                    indexBB += 1
-                    # print(indexBA, indexBA%BA.shape[0], int(indexBA/BA.shape[1]))
-                    odl_akt = math.dist((int(indexBA/BA.shape[1]), indexBA%BA.shape[0]), (int(indexBB/BB.shape[1]), indexBB%BB.shape[0]))
+                    odl_akt = math.dist((indexBA%BA.shape[1], int(indexBA/BA.shape[1])), (int(indexBB%BB.shape[1]), int(indexBB/BB.shape[1])))
                     odl_min = min(odl_akt, odl_min)
-            # print(odl_min)
             miara = miara + odl_min
-        # print(miara)
     return miara
 
 similar = [[], [], []]
-
+index = -1
 for ts in test:
-    index = 0
+    index = index + 1
     miara = sys.maxsize
     wzor_matrix = ''
     for wz in wzor:
-        print(wz[1], ts[1])
-        print('miara niepodobienstwa', miara_podobienstwa(wz[0], ts[0]))
-        print('miara podobienstwa obustronnego', -(miara_podobienstwa(wz[0], ts[0]) + miara_podobienstwa(ts[0], wz[0])))
+        if (miara_podobienstwa(wz[0], ts[0]) + miara_podobienstwa(ts[0], wz[0])) < miara:
+            miara = (miara_podobienstwa(wz[0], ts[0]) + miara_podobienstwa(ts[0], wz[0]))
+            similar[index] = [wz[1], ts[1], miara_podobienstwa(wz[0], ts[0]) + miara_podobienstwa(ts[0], wz[0])]
 
-        if -(miara_podobienstwa(wz[0], ts[0]) + miara_podobienstwa(ts[0], wz[0])) < miara:
-            similar[index] = [wz[1], ts[1], -(miara_podobienstwa(wz[0], ts[0]) + miara_podobienstwa(ts[0], wz[0]))]
-        index += 1
+print(similar)
 
-for x in range(len(similar)):
-    print(similar[x])
+plt.figure(figsize=(14, 7))
 
+plt.subplot(2, 3, 1)
+plt.imshow(znak_wzorcowy_1, cmap='binary')
+plt.title('znak_wzorcowy_1')
 
+plt.subplot(2, 3, 2)
+plt.imshow(znak_wzorcowy_2, cmap='binary')
+plt.title('znak_wzorcowy_2')
+
+plt.subplot(2, 3, 3)
+plt.imshow(znak_wzorcowy_3, cmap='binary')
+plt.title('znak_wzorcowy_3')
+
+plt.subplot(2, 3, 4)
+plt.imshow(znak_testowy_1, cmap='binary')
+plt.title('znak_testowy_1')
+
+plt.subplot(2, 3, 5)
+plt.imshow(znak_testowy_2, cmap='binary')
+plt.title('znak_testowy_2')
+
+plt.subplot(2, 3, 6)
+plt.imshow(znak_testowy_3, cmap='binary')
+plt.title('znak_testowy_3')
+
+plt.show()
 
 
 
